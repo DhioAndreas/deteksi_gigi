@@ -1,0 +1,32 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Kelola Pengguna{% endblock %}
+
+{% block content %}
+  <h2 class="mb-4">👥 Daftar Pengguna</h2>
+
+  {% if users %}
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Nama</th>
+          <th>Email</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ user.nama }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role.capitalize() }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="alert alert-warning">Belum ada pengguna terdaftar.</div>
+  {% endif %}
+{% endblock %}

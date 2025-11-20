@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Dashboard Admin{% endblock %}</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 250px;
+      background: linear-gradient(180deg, #0d6efd 0%, #0a58ca 100%);
+      color: white;
+      padding-top: 1rem;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+    }
+
+    .sidebar h4 {
+      font-weight: 600;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      display: block;
+      padding: 12px 20px;
+      transition: all 0.3s ease;
+      border-left: 4px solid transparent;
+    }
+
+    .sidebar a:hover,
+    .sidebar a.active {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-left: 4px solid #ffffff;
+    }
+
+    .main-content {
+      margin-left: 250px; /* Lebar sidebar */
+      padding: 2rem;
+      background-color: #fff;
+      min-height: 100vh;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      .main-content {
+        margin-left: 0;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Admin -->
+  <div class="sidebar">
+    <h4 class="text-center mb-4">👤 {{ session['username'] }}</h4>
+    <a href="{{ url_for('dashboard_admin') }}" class="{% if request.endpoint == 'dashboard_admin' %}active{% endif %}">🏠 Dashboard</a>
+    <a href="{{ url_for('riwayat_admin') }}" class="{% if request.endpoint == 'riwayat_admin' %}active{% endif %}">📁 Riwayat Deteksi</a>
+    <a href="{{ url_for('kelola_pengguna') }}" class="{% if request.endpoint == 'kelola_pengguna' %}active{% endif %}">👥 Kelola Pengguna</a>
+    <a href="{{ url_for('dataset_admin') }}" class="{% if request.endpoint == 'dataset_admin' %}active{% endif %}">📂 Dataset</a>
+    <a href="{{ url_for('logout') }}">🚪 Logout</a>
+  </div>
+
+  <!-- Konten utama -->
+  <div class="main-content">
+    {% block content %}{% endblock %}
+  </div>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

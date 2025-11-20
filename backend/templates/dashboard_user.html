@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard User{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <h3 class="card-title mb-3">Selamat Datang di Dashboard Pengguna</h3>
+          <p class="card-text">
+            Halo <strong>{{ session['username'] }}</strong>!  
+            Silakan pilih menu di sebelah kiri untuk mulai menggunakan aplikasi deteksi penyakit gigi.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

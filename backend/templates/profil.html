@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}Profil Saya{% endblock %}
+
+{% block content %}
+  <h2 class="mb-4">👤 Profil Saya</h2>
+
+  <div class="card p-4 shadow">
+    <div class="mb-3">
+      <strong>Nama:</strong> {{ user.nama }}
+    </div>
+    <div class="mb-3">
+      <strong>Email:</strong> {{ user.email }}
+    </div>
+    <div class="mb-3">
+      <strong>Role:</strong> {{ user.role.capitalize() }}
+    </div>
+    <a href="{{ url_for('edit_profil') }}" class="btn btn-warning mt-3">✏️ Edit Profil</a>
+  </div>
+{% endblock %}

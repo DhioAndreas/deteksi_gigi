@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Deteksi Penyakit Gigi{% endblock %}
+
+{% block content %}
+<div class="card shadow p-4">
+  <h2 class="mb-3 text-primary">🦷 Deteksi Penyakit Gigi</h2>
+  <p class="text-muted">
+    Unggah gambar gigi Anda untuk mendeteksi apakah termasuk kategori
+    <strong>Gigi Berlubang</strong> atau <strong>Gigi Berkarang</strong>.
+  </p>
+
+  <div class="row mt-4 g-4">
+    <!-- Upload dan Pratinjau -->
+    <div class="col-12 col-md-6">
+      <div class="mb-3">
+        <label for="imageUpload" class="form-label fw-semibold">Pilih Gambar:</label>
+        <input
+          type="file"
+          class="form-control"
+          id="imageUpload"
+          accept="image/*"
+          capture="environment"
+        >
+        <small class="text-muted d-block mt-1">pilih foto dari galeri Anda.</small>
+      </div>
+      <div id="imagePreview" class="border rounded p-2 text-center">
+        <img
+          id="previewImage"
+          src="#"
+          alt="Pratinjau Gambar"
+          style="display: none; max-width: 100%; border-radius: 8px;"
+        >
+      </div>
+      <button id="predictButton" class="btn btn-success w-100 mt-3" disabled>
+        🔍 Mulai Deteksi
+      </button>
+    </div>
+
+    <!-- Hasil Deteksi -->
+    <div class="col-12 col-md-6">
+      <div class="results-area mt-2" style="display: none;">
+        <h4 class="mt-2">📝 Hasil Deteksi</h4>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <strong>Prediksi:</strong> <span id="predictionResult" class="text-success"></span>
+          </li>
+        </ul>
+      </div>
+
+      <div id="loading" class="text-center mt-4" style="display: none;">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-secondary">Mendeteksi gambar...</p>
+      </div>
+
+      <div id="errorMessage" class="alert alert-danger mt-3" style="display: none;"></div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+{% endblock %}

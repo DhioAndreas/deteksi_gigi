@@ -1,0 +1,86 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Riwayat Semua Deteksi{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📁 Riwayat Deteksi Semua Pengguna</h2>
+
+<div class="d-flex justify-content-between mb-3">
+  <input type="text" id="searchInput" class="form-control w-50" placeholder="🔍 Cari berdasarkan nama, prediksi, file...">
+  <button class="btn btn-outline-primary" onclick="exportToWord()">📄 Export ke Word</button>
+</div>
+
+{% if data %}
+  <div class="table-responsive" id="exportArea">
+    <table class="table table-bordered table-striped" id="dataTable">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Nama Pengguna</th>
+          <th>Nama File</th>
+          <th>Prediksi</th>
+          <th>Waktu</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in data %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ row.nama }}</td>
+          <td>{{ row.filename }}</td>
+          <td>{{ row.prediksi }}</td>
+          <td>{{ row.waktu.strftime("%d-%m-%Y %H:%M:%S") }}</td>
+          <td>
+            <a href="{{ url_for('hapus_riwayat', id=row.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('Yakin ingin menghapus data ini?')">🗑️ Hapus</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div class="alert alert-info">Belum ada data deteksi dari pengguna manapun.</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Fitur pencarian langsung
+  document.getElementById("searchInput").addEventListener("keyup", function () {
+    const input = this.value.toLowerCase();
+    const rows = document.querySelectorAll("#dataTable tbody tr");
+    rows.forEach(row => {
+      const match = [...row.children].some(td =>
+        td.textContent.toLowerCase().includes(input)
+      );
+      row.style.display = match ? "" : "none";
+    });
+  });
+
+  // Export ke Word (sederhana)
+  function exportToWord() {
+    const header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' " +
+                   "xmlns:w='urn:schemas-microsoft-com:office:word' " +
+                   "xmlns='http://www.w3.org/TR/REC-html40'>" +
+                   "<head><meta charset='utf-8'><title>Export HTML to Word</title></head><body>";
+    const footer = "</body></html>";
+    const content = document.getElementById("exportArea").innerHTML;
+
+    const sourceHTML = header + content + footer;
+
+    const blob = new Blob(['\ufeff', sourceHTML], {
+      type: 'application/msword'
+    });
+
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = 'Riwayat_Deteksi.doc';
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+</script>
+{% endblock %}

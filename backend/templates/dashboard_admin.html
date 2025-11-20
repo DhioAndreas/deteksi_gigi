@@ -1,0 +1,52 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📊 Dashboard Admin</h2>
+
+<div class="alert alert-info">
+  Selamat datang <strong>{{ session['username'] }}</strong>! Berikut statistik hasil deteksi.
+</div>
+
+<div class="card p-4 shadow-sm">
+  <h5 class="card-title">📈 Statistik Deteksi Penyakit Gigi</h5>
+  <canvas id="deteksiChart" height="120"></canvas>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const data = {
+    labels: {{ chart_labels | tojson }},
+    datasets: [{
+      label: 'Jumlah Deteksi',
+      data: {{ chart_data | tojson }},
+      backgroundColor: ['#0d6efd', '#dc3545'],
+      borderRadius: 6,
+    }]
+  };
+
+  const config = {
+    type: 'bar',
+    data: data,
+    options: {
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: {
+            stepSize: 1
+          }
+        }
+      }
+    }
+  };
+
+  new Chart(document.getElementById('deteksiChart'), config);
+</script>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Kelola Dataset{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📂 Kelola Dataset Gambar</h2>
+
+<!-- Form Upload -->
+<div class="card mb-4">
+  <div class="card-body">
+    <form action="{{ url_for('upload_dataset') }}" method="POST" enctype="multipart/form-data">
+      <div class="row g-3 align-items-center">
+        <div class="col-md-4">
+          <label for="label" class="form-label">Label Kelas:</label>
+          <select name="label" id="label" class="form-select" required>
+            <option value="">-- Pilih Kategori --</option>
+            <option value="Gigi Berlubang">Gigi Berlubang</option>
+            <option value="Gigi Berkarang">Gigi Berkarang</option>
+            <option value="Bukan Gigi">Bukan Gigi</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="image" class="form-label">Upload Gambar:</label>
+          <input type="file" name="image" class="form-control" accept="image/*" required />
+        </div>
+        <div class="col-md-4 d-grid">
+          <label class="invisible">Upload</label>
+          <button type="submit" class="btn btn-primary">📤 Upload</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Tabel Dataset -->
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title mb-3">🖼️ Daftar Gambar Dataset</h5>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover table-striped align-middle">
+        <thead class="table-primary">
+          <tr>
+            <th>#</th>
+            <th>Preview Gambar</th>
+            <th>Label</th>
+            <th>Nama File</th>
+            <th>Waktu Upload</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for data in dataset %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+              <img src="{{ url_for('static', filename='uploads/' + data.filename) }}"
+                   alt="gambar"
+                   style="width: 100px; height: auto; border-radius: 6px;" />
+            </td>
+            <td>{{ data.label }}</td>
+            <td>{{ data.filename }}</td>
+            <td>{{ data.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5" class="text-center">Belum ada data.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
